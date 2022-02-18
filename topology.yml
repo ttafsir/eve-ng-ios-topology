@@ -1,0 +1,63 @@
+---
+  name: cisco-ansible-lab
+  description: Cisco Ansible Automation Lab
+  path: "/"
+  nodes:
+    - name: router1
+      template: vios
+      image: vios-adventerprisek9-m.vmdk.SPA.156-2.T
+      node_type: qemu
+      left: 50
+      top: 135
+      ethernet: 8
+      configuration:
+        template: ios-base.j2
+        vars: data/router1.yml
+    - name: router2
+      template: vios
+      image: vios-adventerprisek9-m.vmdk.SPA.156-2.T
+      node_type: qemu
+      left: 200
+      top: 135
+      ethernet: 8
+      configuration:
+        template: ios-base.j2
+        vars: data/router2.yml
+    - name: router3
+      template: vios
+      image: vios-adventerprisek9-m.vmdk.SPA.156-2.T
+      node_type: qemu
+      left: 350
+      top: 135
+      ethernet: 8
+      configuration:
+        template: ios-base.j2
+        vars: data/router3.yml
+    - name: n9kv-1
+      template: nxosv9k
+      image: nxosv9k-9.3.5
+      node_type: qemu
+      left: 350
+      top: 335
+      ethernet: 8
+      configuration:
+        template: nxos-base.j2
+        vars: data/n9kv-1.yml
+  networks:
+    - name: eve-external
+      network_type: nat0
+      visibility: 1
+      top: 500
+      left: 475
+  links:
+    network:
+      - {"src": "router1", "src_label": "Gi0/0", "dst": "eve-external"}
+      - {"src": "router2", "src_label": "Gi0/0", "dst": "eve-external"}
+      - {"src": "router3", "src_label": "Gi0/0", "dst": "eve-external"}
+      - {"src": "n9kv-1",  "src_label": "Mgmt0", "dst": "eve-external"}
+    node:
+      # router1
+      - {"src": "router1", "src_label": "Gi0/1", "dst": "router2", "dst_label": "Gi0/1"}
+      - {"src": "router1", "src_label": "Gi0/2", "dst": "n9kv-1", "dst_label": "E1/1"}
+      - {"src": "router2", "src_label": "Gi0/2", "dst": "router3", "dst_label": "Gi0/1"}
+      - {"src": "router3", "src_label": "Gi0/2", "dst": "n9kv-1", "dst_label": "E1/2"}

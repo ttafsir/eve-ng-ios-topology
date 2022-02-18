@@ -1,0 +1,6 @@
+---
+hostname: router2
+management_address: 172.29.129.2
+management_gateway: 172.29.129.254
+management_netmask: 255.255.255.0
+domain: wwtatc.local

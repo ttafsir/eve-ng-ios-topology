@@ -1,0 +1,5 @@
+---
+hostname: n9kv-1
+management_address: 172.29.129.4
+management_gateway: 172.29.129.254
+domain: wwtatc.local

@@ -1,0 +1,44 @@
+!
+hostname {{ hostname }}
+!
+!
+enable secret 9 $9$Ku91kilofW.o/U$axjcO7wAHYHF.j5aWD2qecGtcaZhDaEVBanayFEJCu2
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication enable default enable
+aaa authorization exec default local
+!
+!
+username admin privilege 15 secret 9 $9$cgIHWG88aJGXu.$sANmPGoKs4baNadsdQ7VFQ/aN1Vc8ykvUuii77vCUTM
+!
+cripto key generate rsa modulus 1024
+!
+ip domain name {{ domain }}
+!
+interface Gi0/0
+ description MGMT
+ ip address {{ management_address }} 255.255.240.0
+ negotiation auto
+ no shutdown
+!
+!
+ip route 0.0.0.0 0.0.0.0 {{ management_gateway }}
+ip ssh version 2
+ip scp server enable
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0 4
+ transport input ssh
+!
+!
+!
+!
+!
+!
+end
